@@ -14,13 +14,13 @@ public class FloodFill {
         this.estrutura = estrutura;
     }
 
-    public void colorir(ImagemHandler imgHangler, int startX, int starY, int newRed, int newGreen, int newBlue) {
+    public void colorir(ImagemHandler imgHangler, int startX, int startY, int newRed, int newGreen, int newBlue) {
         BufferedImage image = imgHangler.getImage();
         int width = image.getWidth();
         int height = image.getHeight();
 
         //? Pega a cor original do Pixel inicial
-        int targetRGB = image.getRGB(startX, starY);
+        int targetRGB = image.getRGB(startX, startY);
 
         int newRGB = (newRed << 16) | (newGreen << 8) | newBlue;
 
@@ -32,7 +32,7 @@ public class FloodFill {
         //? Controla os Pixels que já foram visitados
         Set<String> pixelsVisitados = new HashSet<>();
 
-        estrutura.adicionar(new Pixel(startX, starY, newRed, newGreen, newBlue));
+        estrutura.adicionar(new Pixel(startX, startY, newRed, newGreen, newBlue));
 
         while (!estrutura.estaVazia()) {
             //? Remove o próximo Pixel
