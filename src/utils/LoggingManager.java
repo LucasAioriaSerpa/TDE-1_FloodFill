@@ -56,9 +56,10 @@ import java.util.logging.Logger;
  *      );
  * }
  * {@code logger.logError(
- * "404",
- * "Erro ao conectar ao banco de dados.",
- * exception);
+ *          "404",
+ *          "Erro ao conectar ao banco de dados.",
+ *          exception
+ *      );
  * }
  * </pre>
  */

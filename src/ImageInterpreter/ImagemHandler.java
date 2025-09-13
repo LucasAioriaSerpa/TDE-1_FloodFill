@@ -23,7 +23,7 @@ import java.util.HashMap;
  *
  * <h2>Métodos</h2>
  * <ul>
- *     <li>{@code getPixels()}: Extrai os pixels da imagem e os armazena em uma lista.</li>
+ *     <li>{@code getPixelsFromImage()}: Extrai os pixels da imagem e os armazena em uma lista.</li>
  * </ul>
  * */
 public class ImagemHandler {
@@ -31,7 +31,7 @@ public class ImagemHandler {
     private String filePath;
     private BufferedImage image;
     private final HashMap<String, Integer> dimensions;
-    private ArrayList<Pixel> pixels;
+    private final ArrayList<Pixel> pixels;
     public ImagemHandler(String filePath) throws IOException {
         logger.logInfo(
                 "IMG-000",
@@ -40,20 +40,22 @@ public class ImagemHandler {
         this.filePath = filePath;
         File fileImage = new File(filePath);
         this.image = ImageIO.read(fileImage);
-        this.dimensions = new HashMap<String, Integer>();
+        this.dimensions = new HashMap<>();
         this.dimensions.put("X", image.getWidth());
         this.dimensions.put("Y", image.getHeight());
         this.dimensions.put("totalPixels", image.getWidth() * image.getHeight());
-        this.pixels = getPixels();
+        this.pixels = getPixelsFromImage();
     }
     //? GETTERS AND SETTERS:
-    public String getFilePath() { return filePath; }
-    public String setFilePath(String filePath) { return this.filePath = filePath; }
-    public BufferedImage getImage() { return image; }
-    public void setImage(BufferedImage image) { this.image = image; }
+    public String                   getFilePath() { return filePath; }
+    public String                   setFilePath(String filePath) { return this.filePath = filePath; }
+    public BufferedImage            getImage() { return image; }
+    public void                     setImage(BufferedImage image) { this.image = image; }
+    public HashMap<String, Integer> getDimensions() { return dimensions; }
+    public ArrayList<Pixel>         getPixels() { return pixels; }
 
     //? METHODS:
-    private ArrayList<Pixel> getPixels() {
+    private ArrayList<Pixel> getPixelsFromImage() {
         ArrayList<Pixel> pixels = new ArrayList<>();
         try {
             for (int Y = 0; Y < dimensions.get("Y"); Y++) {
@@ -64,31 +66,15 @@ public class ImagemHandler {
                     int BLUE = RGB & 0xFF;
                     Pixel pixel = new Pixel(X, Y, RED, GREEN, BLUE);
                     pixels.add(pixel);
-                    logger.logInfo(
-                            "IMG-100",
-                            String.format(
-                                    "Pixel at position (%d, %d) with color (R:%d, G:%d, B:%d) extracted successfully.",
-                                    X, Y, RED, GREEN, BLUE
-                            )
+                    logger.logInfo("IMG-100",
+                            String.format("Pixel at position (%d, %d) with color (R:%d, G:%d, B:%d) extracted successfully.",X, Y, RED, GREEN, BLUE)
                     );
                 }
             }
         } catch (Exception exception) {
-            logger.logError(
-                    "IMG-404",
-                    "Error while extracting pixels from image.",
-                    exception
-            );
+            logger.logError("IMG-404", "Error while extracting pixels from image.", exception);
             throw new RuntimeException(exception);
-        } finally {
-            logger.logInfo(
-                    "IMG-200",
-                    String.format(
-                            "All %d pixels extracted successfully.",
-                            dimensions.get("totalPixels")
-                    )
-            );
-        }
+        } finally {logger.logInfo("IMG-200", String.format("All %d pixels extracted successfully.", dimensions.get("totalPixels")));}
         return pixels;
     }
 }

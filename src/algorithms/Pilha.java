@@ -22,6 +22,7 @@ import java.util.LinkedList;
  * </ul>
  * */
 public class Pilha implements EstruturaDeDados{
+    private final LoggingManager logger = new LoggingManager();
     private final LinkedList<Pixel> stack = new LinkedList<>();
 
     @Override
@@ -32,8 +33,7 @@ public class Pilha implements EstruturaDeDados{
     @Override
     public Pixel remover() {
         if (estaVazia()) {
-            LoggingManager logger = new LoggingManager();
-            logger.logError("STR-001", "Tentativa de remover elemento de uma estrutura vazia.",
+            logger.logError("PLH-404", "Tentativa de remover elemento de uma estrutura vazia.",
                     new java.util.NoSuchElementException());
             throw new java.util.NoSuchElementException("Não é possível remover, a estrutura de dados está vazia.");
         }
