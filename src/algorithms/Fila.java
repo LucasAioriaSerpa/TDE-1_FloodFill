@@ -13,6 +13,11 @@ public class Fila implements EstruturaDeDados{
     }
 
     @Override
+    public Pixel remover() {
+        return queue.removeFirst();
+    }
+
+    @Override
     public boolean estaVazia() {
         return queue.isEmpty();
     }

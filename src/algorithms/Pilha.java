@@ -13,6 +13,11 @@ public class Pilha implements EstruturaDeDados{
     }
 
     @Override
+    public Pixel remover() {
+        return stack.removeFirst();
+    }
+
+    @Override
     public boolean estaVazia(){
         return stack.isEmpty();
     }
