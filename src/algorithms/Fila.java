@@ -1,5 +1,7 @@
 package algorithms;
 
+import ImageInterpreter.Pixel;
+
 import java.util.LinkedList;
 
 public class Fila implements EstruturaDeDados{
