@@ -1,5 +1,17 @@
 package algorithms;
 
-public class Pilha {
+import java.util.LinkedList;
 
+public class Pilha implements EstruturaDeDados{
+    private final LinkedList<Pixel> stack = new LinkedList<>();
+
+    @Override
+    public void adicionar(Pixel p){
+        stack.addFirst(p);
+    }
+
+    @Override
+    public boolean estaVazia(){
+        return stack.isEmpty();
+    }
 }
