@@ -9,8 +9,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static javax.swing.UIManager.put;
-
+/**
+ * <h1>ImagemHandler</h1>
+ * <p>Classe responsável por carregar uma imagem a partir de um caminho de arquivo, extrair seus pixels e armazenar informações relevantes.</p>
+ *
+ * <h2>Atributos</h2>
+ * <ul>
+ *     <li>{@code filePath}: String - Armazena o caminho do arquivo da imagem.</li>
+ *     <li>{@code image}: BufferedImage - Armazena a imagem carregada.</li>
+ *     <li>{@code dimensions}: HashMap<String, Integer> - Armazena as dimensões da imagem (largura, altura e total de pixels).</li>
+ *     <li>{@code pixels}: ArrayList<Pixel> - Armazena os pixels extraídos da imagem.</li>
+ * </ul>
+ *
+ * <h2>Métodos</h2>
+ * <ul>
+ *     <li>{@code getPixels()}: Extrai os pixels da imagem e os armazena em uma lista.</li>
+ * </ul>
+ * */
 public class ImagemHandler {
     private final LoggingManager logger = new LoggingManager();
     private String filePath;
