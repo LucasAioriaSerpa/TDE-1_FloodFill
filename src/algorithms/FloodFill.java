@@ -52,7 +52,7 @@ public class FloodFill {
                 pixelsVisitados.add(chave);
                 image.setRGB(x, y, newRGB);
 
-                //? Adiciona os 4 vizinhos (cima, baixo, esquerda, direita) na estrutura dessa forma, eles serão analizados depois no loop
+                //? Adiciona os 4 vizinhos (cima, baixo, esquerda, direita) na estrutura, dessa forma eles serão analizados depois no loop
                 estrutura.adicionar(new Pixel(x + 1, y, newRed, newGreen, newBlue));
                 estrutura.adicionar(new Pixel(x - 1, y, newRed, newGreen, newBlue));
                 estrutura.adicionar(new Pixel(x, y + 1, newRed, newGreen, newBlue));
