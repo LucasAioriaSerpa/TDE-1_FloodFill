@@ -29,7 +29,7 @@ public class TestMain {
             );
         }
     }
-    public static void
+
     public static void main(String[] args) {
         logger.logInfo(
                 "APP_TEST-000",
