@@ -15,13 +15,13 @@ public class Main {
         try {
             //? Inicializa a imagem
             String caminhoDaImagem = "../TDE-1_FloodFill/assets/Sprite-0001.png";
-            logger.logInfo("100","Carregando Imagem: " + caminhoDaImagem);
+            logger.logInfo("MAIN-100","Carregando Imagem: " + caminhoDaImagem);
 
             ImagemHandler imagem = new ImagemHandler(caminhoDaImagem);
 
             //? Escolhe a estrutura de dados (Pilha ou Fila)
             EstruturaDeDados estrutura = new Pilha();
-            logger.logInfo("100","Estrutura escolhida: " + estrutura.getClass().getSimpleName());
+            logger.logInfo("MAIN-100","Estrutura escolhida: " + estrutura.getClass().getSimpleName());
 
             //? Inicializa o algoritmo
             FloodFill floodFill = new FloodFill(estrutura);
@@ -32,13 +32,13 @@ public class Main {
             int newRed = 255;
             int newGreen = 0;
             int newBlue = 0;
-            logger.logInfo("100",
+            logger.logInfo("MAIN-100",
                     String.format("Aplicando FloodFill em (%d, %d) com cor RGB(%d,%d,%d)",
                             startX, startY, newRed, newGreen, newBlue)
             );
 
             floodFill.colorir(imagem, startX, startY, newRed, newGreen, newBlue);
-            logger.logInfo("200","Algoritmo FloodFill concluído com sucesso!");
+            logger.logInfo("MAIN-200","Algoritmo FloodFill concluído com sucesso!");
 
             //? Cria a pasta de saída se não existir e salva a imagem
             String pastaDeSaida = "../TDE-1_FloodFill/output";
@@ -51,12 +51,12 @@ public class Main {
             String caminhoCompletoSaida = pastaSaida.getAbsolutePath() + "/" + nomeDoArquivoDeSaida;
 
             ImageIO.write(imagem.getImage(), "png", new File(caminhoCompletoSaida));
-            logger.logInfo("200", "Imagem salva em: " + caminhoCompletoSaida);
+            logger.logInfo("MAIN-200", "Imagem salva em: " + caminhoCompletoSaida);
 
         } catch (IOException e) {
-            logger.logError("404", "Erro ao carregar ou salvar a imagem!", e);
+            logger.logError("MAIN-404", "Erro ao carregar ou salvar a imagem!", e);
         } catch (Exception e) {
-            logger.logError("404", "Erro inesperado durante a execução.", e);
+            logger.logError("MAIN-404", "Erro inesperado durante a execução.", e);
         }
     }
 
