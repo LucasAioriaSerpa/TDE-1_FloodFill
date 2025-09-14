@@ -2,6 +2,7 @@ package algorithms;
 
 import ImageInterpreter.ImagemHandler;
 import ImageInterpreter.Pixel;
+import utils.LoggingManager;
 
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
@@ -9,12 +10,14 @@ import java.util.Set;
 
 public class FloodFill {
     private final EstruturaDeDados estrutura;
+    private final LoggingManager logger = new LoggingManager();
 
     public FloodFill(EstruturaDeDados estrutura) {
         this.estrutura = estrutura;
     }
 
     public void colorir(ImagemHandler imgHangler, int startX, int startY, int newRed, int newGreen, int newBlue) {
+        logger.logInfo("FF-100", String.format("Iniciando o algoritmo Flood Fill em (%d,%d)", startX, startY));
         BufferedImage image = imgHangler.getImage();
         int width = image.getWidth();
         int height = image.getHeight();
@@ -26,6 +29,7 @@ public class FloodFill {
 
         //? Se a cor original for igual a nova cor, para
         if (targetRGB == newRGB) {
+            logger.logWarning("FF-303", "Cor inicial já é igual à nova cor, operação cancelada.", null);
             return;
         }
 
@@ -34,31 +38,39 @@ public class FloodFill {
 
         estrutura.adicionar(new Pixel(startX, startY, newRed, newGreen, newBlue));
 
+        int numPixelsAlterados = 0;
+
         while (!estrutura.estaVazia()) {
-            //? Remove o próximo Pixel
-            Pixel atual = estrutura.remover();
-            int x = atual.getPosition().get("X");
-            int y = atual.getPosition().get("Y");
+            try {
+                //? Remove o próximo Pixel
+                Pixel atual = estrutura.remover();
+                int x = atual.getPosition().get("X");
+                int y = atual.getPosition().get("Y");
 
-            //? Cria uma chave única para cada Pixel
-            String chave = x + "," + y;
+                //? Cria uma chave única para cada Pixel
+                String chave = x + "," + y;
 
-            //? Verifica se o Pixel ainda não foi visitado, se está dentro dos limites da imagem e se a cor dele é igual a cor original
-            if (!pixelsVisitados.contains(chave) &&
-                    x >= 0 && x < width &&
-                    y >= 0 && y < height &&
-                    image.getRGB(x, y) == targetRGB) {
+                //? Verifica se o Pixel ainda não foi visitado, se está dentro dos limites da imagem e se a cor dele é igual a cor original
+                if (!pixelsVisitados.contains(chave) &&
+                        x >= 0 && x < width &&
+                        y >= 0 && y < height &&
+                        image.getRGB(x, y) == targetRGB) {
 
-                pixelsVisitados.add(chave);
-                image.setRGB(x, y, newRGB);
+                    pixelsVisitados.add(chave);
+                    image.setRGB(x, y, newRGB);
+                    numPixelsAlterados++;
 
-                //? Adiciona os 4 vizinhos (cima, baixo, esquerda, direita) na estrutura, dessa forma eles serão analizados depois no loop
-                estrutura.adicionar(new Pixel(x + 1, y, newRed, newGreen, newBlue));
-                estrutura.adicionar(new Pixel(x - 1, y, newRed, newGreen, newBlue));
-                estrutura.adicionar(new Pixel(x, y + 1, newRed, newGreen, newBlue));
-                estrutura.adicionar(new Pixel(x, y - 1, newRed, newGreen, newBlue));
+                    //? Adiciona os 4 vizinhos (cima, baixo, esquerda, direita) na estrutura, dessa forma eles serão analizados depois no loop
+                    estrutura.adicionar(new Pixel(x + 1, y, newRed, newGreen, newBlue));
+                    estrutura.adicionar(new Pixel(x - 1, y, newRed, newGreen, newBlue));
+                    estrutura.adicionar(new Pixel(x, y + 1, newRed, newGreen, newBlue));
+                    estrutura.adicionar(new Pixel(x, y - 1, newRed, newGreen, newBlue));
+                }
+            } catch (Exception e) {
+                logger.logError("FF-404", "Erro ao processar um pixel dentro do loop.", e);
             }
         }
 
+        logger.logInfo("FF-200", "Flood Fill concluído com sucesso! Total de Pixels alterados: " + numPixelsAlterados);
     }
 }
