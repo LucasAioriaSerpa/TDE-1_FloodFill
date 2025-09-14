@@ -28,7 +28,14 @@ public class Main {
             pointer.put("green", 5);
             pointer.put("blue", 5);
             floodFill.colorir(imagemHandler, pointer.get("x"), pointer.get("y"), pointer.get("red"), pointer.get("green"), pointer.get("blue"));
-            Window window = new Window("FloodFill em pratica!", 800, 600, imagemHandler, floodFill.getFrameCounter());
+            Window window = new Window(
+                    "FloodFill em pratica!",
+                    800,
+                    600,
+                    imagemHandler,
+                    floodFill.getFrameCounter(),
+                    20
+            );
             logger.logInfo(
                     "MAIN-200",
                     "Execução de exemplo FloodFill executada com sucesso!"

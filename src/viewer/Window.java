@@ -13,7 +13,7 @@ public class Window extends JFrame {
     public Timer timer;
     public int index;
 
-    public Window(String title, int X, int Y, ImagemHandler imagemHandler, int frameSize) {
+    public Window(String title, int X, int Y, ImagemHandler imagemHandler, int frameSize, int delaySpeed) {
         setup(title, X, Y);
         JPanel panel = new JPanel(new GridLayout(1, 3, 10, 0));
         JLabel ImgOriginal = loadImage(imagemHandler.getFilePath(), 300);
@@ -23,7 +23,7 @@ public class Window extends JFrame {
         panel.add(arrow);
         panel.add(ImgAnimationResult);
         add(panel);
-        timer = new Timer(1, new ActionListener() {
+        timer = new Timer(delaySpeed, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (index == frames.size()-1) {
@@ -33,7 +33,6 @@ public class Window extends JFrame {
                 }
                 index = (index + 1) % frames.size();
                 ImgAnimationResult.setIcon(frames.get(index));
-                System.out.println("index: " + index);
             }
         });
         timer.start();

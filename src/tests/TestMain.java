@@ -37,7 +37,16 @@ public class TestMain {
     }
     public static void viewImage() {
         try {
-            new Window("test", 800, 600, new ImagemHandler("Sprite-0001.png"), 1502);
+            new Window(
+                    "test",
+                    800,
+                    600,
+                    new ImagemHandler(
+                            "Sprite-0001.png"
+                    ),
+                    1502,
+                    50
+            );
             logger.logInfo(
                     "APP-TEST-200",
                     "Visualização da janela foi feita com sucesso!"
