@@ -11,10 +11,13 @@ import java.util.Set;
 public class FloodFill {
     private final EstruturaDeDados estrutura;
     private final LoggingManager logger = new LoggingManager();
+    private int frameCounter = 0;
 
     public FloodFill(EstruturaDeDados estrutura) {
         this.estrutura = estrutura;
     }
+
+    public int getFrameCounter() { return frameCounter; }
 
     public void colorir(ImagemHandler imgHangler, int startX, int startY, int newRed, int newGreen, int newBlue) {
         logger.logInfo("FF-100", String.format("Iniciando o algoritmo Flood Fill em (%d,%d)", startX, startY));
@@ -25,7 +28,7 @@ public class FloodFill {
         //? Pega a cor original do Pixel inicial
         int targetRGB = image.getRGB(startX, startY);
 
-        int newRGB = (newRed << 16) | (newGreen << 8) | newBlue;
+        int newRGB = (255 << 24) | (newRed << 16) | (newGreen << 8) | newBlue;
 
         //? Se a cor original for igual a nova cor, para
         if (targetRGB == newRGB) {
@@ -54,7 +57,10 @@ public class FloodFill {
                 if (!pixelsVisitados.contains(chave) &&
                         x >= 0 && x < width &&
                         y >= 0 && y < height &&
-                        image.getRGB(x, y) == targetRGB) {
+                        image.getRGB(x, y) == targetRGB
+                    ) {
+                    //? Criador dos frames:
+                    imgHangler.salvarFrame(frameCounter);
 
                     pixelsVisitados.add(chave);
                     image.setRGB(x, y, newRGB);
@@ -65,11 +71,17 @@ public class FloodFill {
                     estrutura.adicionar(new Pixel(x - 1, y, newRed, newGreen, newBlue));
                     estrutura.adicionar(new Pixel(x, y + 1, newRed, newGreen, newBlue));
                     estrutura.adicionar(new Pixel(x, y - 1, newRed, newGreen, newBlue));
+
+                    //? Contador dos frames:
+                    frameCounter++;
                 }
             } catch (Exception e) {
                 logger.logError("FF-404", "Erro ao processar um pixel dentro do loop.", e);
             }
         }
+        //? Criando o último frame:
+        frameCounter++;
+        imgHangler.salvarFrame(frameCounter);
 
         logger.logInfo("FF-200", "Flood Fill concluído com sucesso! Total de Pixels alterados: " + numPixelsAlterados);
     }

@@ -3,18 +3,50 @@ import algorithms.EstruturaDeDados;
 import algorithms.FloodFill;
 import algorithms.Pilha;
 import utils.LoggingManager;
+import viewer.Window;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class Main {
+    public static LoggingManager logger = new LoggingManager();
     public static void main(String[] args) {
-        LoggingManager logger = new LoggingManager();
-
+        try {
+            logger.logInfo(
+                    "MAIN-100",
+                    "INICIALIZANDO CRIAÇÃO DOS FRAMES"
+            );
+            ImagemHandler imagemHandler = new ImagemHandler("Sprite-0001.png");
+            EstruturaDeDados estruturaDeDados = new Pilha();
+            FloodFill floodFill = new FloodFill(estruturaDeDados);
+            HashMap<String, Integer> pointer = new HashMap<>();
+            pointer.put("x", 50);
+            pointer.put("y", 15);
+            pointer.put("red", 5);
+            pointer.put("green", 5);
+            pointer.put("blue", 5);
+            floodFill.colorir(imagemHandler, pointer.get("x"), pointer.get("y"), pointer.get("red"), pointer.get("green"), pointer.get("blue"));
+            Window window = new Window("FloodFill em pratica!", 800, 600, imagemHandler, floodFill.getFrameCounter());
+            logger.logInfo(
+                    "MAIN-200",
+                    "Execução de exemplo FloodFill executada com sucesso!"
+            );
+        } catch (IllegalArgumentException e) {
+            logger.logError("MAIN-404", "Parâmetros inválidos passados ao algoritmo FloodFill.", e);
+        } catch (IndexOutOfBoundsException e) {
+            logger.logError("MAIN-404", "Coordenadas iniciais fora dos limites da imagem.", e);
+        } catch (IOException e) {
+            logger.logError("MAIN-404", "Erro ao carregar ou salvar a imagem!", e);
+        } catch (Exception e) {
+            logger.logError("MAIN-404", "Erro inesperado durante a execução.", e);
+        }
+    }
+    public static void creationFrames() {
         try {
             //? Inicializa a imagem
-            String caminhoDaImagem = "../TDE-1_FloodFill/assets/Sprite-0001.png";
+            String caminhoDaImagem = "Sprite-0001.png";
             logger.logInfo("MAIN-100","Carregando Imagem: " + caminhoDaImagem);
 
             ImagemHandler imagem = new ImagemHandler(caminhoDaImagem);
