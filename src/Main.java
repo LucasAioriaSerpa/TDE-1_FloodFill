@@ -53,11 +53,14 @@ public class Main {
             ImageIO.write(imagem.getImage(), "png", new File(caminhoCompletoSaida));
             logger.logInfo("MAIN-200", "Imagem salva em: " + caminhoCompletoSaida);
 
+        } catch (IllegalArgumentException e) {
+            logger.logError("MAIN-404", "Parâmetros inválidos passados ao algoritmo FloodFill.", e);
+        } catch (IndexOutOfBoundsException e) {
+            logger.logError("MAIN-404", "Coordenadas iniciais fora dos limites da imagem.", e);
         } catch (IOException e) {
             logger.logError("MAIN-404", "Erro ao carregar ou salvar a imagem!", e);
         } catch (Exception e) {
             logger.logError("MAIN-404", "Erro inesperado durante a execução.", e);
         }
     }
-
 }
