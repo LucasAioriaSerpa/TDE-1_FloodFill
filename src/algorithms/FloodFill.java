@@ -1,6 +1,6 @@
 package algorithms;
 
-import ImageInterpreter.ImagemHandler;
+import ImageInterpreter.ImageHandler;
 import ImageInterpreter.Pixel;
 import utils.LoggingManager;
 
@@ -9,80 +9,80 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class FloodFill {
-    private final EstruturaDeDados estrutura;
+    private final DataStructure structure;
     private final LoggingManager logger = new LoggingManager();
     private int frameCounter = 0;
 
-    public FloodFill(EstruturaDeDados estrutura) {
-        this.estrutura = estrutura;
+    public FloodFill(DataStructure structure) {
+        this.structure = structure;
     }
 
     public int getFrameCounter() { return frameCounter; }
 
-    public void colorir(ImagemHandler imgHangler, int startX, int startY, int newRed, int newGreen, int newBlue) {
-        logger.logInfo("FF-100", String.format("Iniciando o algoritmo Flood Fill em (%d,%d)", startX, startY));
-        BufferedImage image = imgHangler.getImage();
+    public void fill(ImageHandler imgHandler, int startX, int startY, int newRed, int newGreen, int newBlue) {
+        logger.logInfo("FF-100", String.format("Starting Flood Fill algorithm at (%d,%d)", startX, startY));
+        BufferedImage image = imgHandler.getImage();
         int width = image.getWidth();
         int height = image.getHeight();
 
-        //? Pega a cor original do Pixel inicial
+        // Get the original color of the starting pixel
         int targetRGB = image.getRGB(startX, startY);
 
         int newRGB = (255 << 24) | (newRed << 16) | (newGreen << 8) | newBlue;
 
-        //? Se a cor original for igual a nova cor, para
+        // If the original color is the same as the new color, stop
         if (targetRGB == newRGB) {
-            logger.logWarning("FF-303", "Cor inicial já é igual à nova cor, operação cancelada.", null);
+            logger.logWarning("FF-303", "Starting color is already the same as the new color, operation canceled.", null);
             return;
         }
 
-        //? Controla os Pixels que já foram visitados
-        Set<String> pixelsVisitados = new HashSet<>();
+        // Keeps track of visited pixels
+        Set<String> visitedPixels = new HashSet<>();
 
-        estrutura.adicionar(new Pixel(startX, startY, newRed, newGreen, newBlue));
+        structure.add(new Pixel(startX, startY, newRed, newGreen, newBlue));
 
-        int numPixelsAlterados = 0;
+        int changedPixelsCount = 0;
 
-        while (!estrutura.estaVazia()) {
+        while (!structure.isEmpty()) {
             try {
-                //? Remove o próximo Pixel
-                Pixel atual = estrutura.remover();
-                int x = atual.getPosition().get("X");
-                int y = atual.getPosition().get("Y");
+                // Remove the next pixel
+                Pixel current = structure.remove();
+                int x = current.getPosition().get("X");
+                int y = current.getPosition().get("Y");
 
-                //? Cria uma chave única para cada Pixel
-                String chave = x + "," + y;
+                // Create a unique key for each pixel
+                String key = x + "," + y;
 
-                //? Verifica se o Pixel ainda não foi visitado, se está dentro dos limites da imagem e se a cor dele é igual a cor original
-                if (!pixelsVisitados.contains(chave) &&
+                // Check if the pixel has not been visited, is within bounds, and its color matches the original
+                if (!visitedPixels.contains(key) &&
                         x >= 0 && x < width &&
                         y >= 0 && y < height &&
                         image.getRGB(x, y) == targetRGB
-                    ) {
-                    //? Criador dos frames:
-                    imgHangler.salvarFrame(frameCounter);
+                ) {
+                    // Frame generator:
+                    imgHandler.saveFrame(frameCounter);
 
-                    pixelsVisitados.add(chave);
+                    visitedPixels.add(key);
                     image.setRGB(x, y, newRGB);
-                    numPixelsAlterados++;
+                    changedPixelsCount++;
 
-                    //? Adiciona os 4 vizinhos (cima, baixo, esquerda, direita) na estrutura, dessa forma eles serão analizados depois no loop
-                    estrutura.adicionar(new Pixel(x + 1, y, newRed, newGreen, newBlue));
-                    estrutura.adicionar(new Pixel(x - 1, y, newRed, newGreen, newBlue));
-                    estrutura.adicionar(new Pixel(x, y + 1, newRed, newGreen, newBlue));
-                    estrutura.adicionar(new Pixel(x, y - 1, newRed, newGreen, newBlue));
+                    // Add the 4 neighbors (up, down, left, right) to the structure so they will be analyzed later in the loop
+                    structure.add(new Pixel(x + 1, y, newRed, newGreen, newBlue));
+                    structure.add(new Pixel(x - 1, y, newRed, newGreen, newBlue));
+                    structure.add(new Pixel(x, y + 1, newRed, newGreen, newBlue));
+                    structure.add(new Pixel(x, y - 1, newRed, newGreen, newBlue));
 
-                    //? Contador dos frames:
+                    // Frame counter:
                     frameCounter++;
                 }
             } catch (Exception e) {
-                logger.logError("FF-404", "Erro ao processar um pixel dentro do loop.", e);
+                logger.logError("FF-404", "Error processing a pixel inside the loop.", e);
             }
         }
-        //? Criando o último frame:
+        // Create the last frame:
         frameCounter++;
-        imgHangler.salvarFrame(frameCounter);
+        imgHandler.saveFrame(frameCounter);
 
-        logger.logInfo("FF-200", "Flood Fill concluído com sucesso! Total de Pixels alterados: " + numPixelsAlterados);
+        logger.logInfo("FF-200", "Flood Fill successfully completed! Total pixels changed: " + changedPixelsCount);
     }
 }

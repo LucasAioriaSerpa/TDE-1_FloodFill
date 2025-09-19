@@ -1,7 +1,7 @@
-import ImageInterpreter.ImagemHandler;
-import algorithms.EstruturaDeDados;
+import ImageInterpreter.ImageHandler;
+import algorithms.DataStructure;
 import algorithms.FloodFill;
-import algorithms.Pilha;
+import algorithms.Stack;
 import utils.LoggingManager;
 import viewer.Window;
 
@@ -16,90 +16,90 @@ public class Main {
         try {
             logger.logInfo(
                     "MAIN-100",
-                    "INICIALIZANDO CRIAÇÃO DOS FRAMES"
+                    "STARTING FRAMES CREATION"
             );
-            ImagemHandler imagemHandler = new ImagemHandler("Sprite-0001.png");
-            EstruturaDeDados estruturaDeDados = new Pilha();
-            FloodFill floodFill = new FloodFill(estruturaDeDados);
+            ImageHandler imageHandler = new ImageHandler("Sprite-0001.png");
+            DataStructure dataStructure = new Stack();
+            FloodFill floodFill = new FloodFill(dataStructure);
             HashMap<String, Integer> pointer = new HashMap<>();
             pointer.put("x", 50);
             pointer.put("y", 15);
             pointer.put("red", 5);
             pointer.put("green", 5);
             pointer.put("blue", 5);
-            floodFill.colorir(imagemHandler, pointer.get("x"), pointer.get("y"), pointer.get("red"), pointer.get("green"), pointer.get("blue"));
+            floodFill.fill(imageHandler, pointer.get("x"), pointer.get("y"), pointer.get("red"), pointer.get("green"), pointer.get("blue"));
             Window window = new Window(
-                    "FloodFill em pratica!",
+                    "FloodFill in practice!",
                     800,
                     600,
-                    imagemHandler,
+                    imageHandler,
                     floodFill.getFrameCounter(),
                     20
             );
             logger.logInfo(
                     "MAIN-200",
-                    "Execução de exemplo FloodFill executada com sucesso!"
+                    "FloodFill example run successfully!"
             );
         } catch (IllegalArgumentException e) {
-            logger.logError("MAIN-404", "Parâmetros inválidos passados ao algoritmo FloodFill.", e);
+            logger.logError("MAIN-404", "Invalid parameters passed to the FloodFill algorithm.", e);
         } catch (IndexOutOfBoundsException e) {
-            logger.logError("MAIN-404", "Coordenadas iniciais fora dos limites da imagem.", e);
+            logger.logError("MAIN-404", "Starting coordinates out of image bounds.", e);
         } catch (IOException e) {
-            logger.logError("MAIN-404", "Erro ao carregar ou salvar a imagem!", e);
+            logger.logError("MAIN-404", "Error loading or saving the image!", e);
         } catch (Exception e) {
-            logger.logError("MAIN-404", "Erro inesperado durante a execução.", e);
+            logger.logError("MAIN-404", "Unexpected error during execution.", e);
         }
     }
     public static void creationFrames() {
         try {
-            //? Inicializa a imagem
-            String caminhoDaImagem = "Sprite-0001.png";
-            logger.logInfo("MAIN-100","Carregando Imagem: " + caminhoDaImagem);
+            // Initialize the image
+            String imagePath = "Sprite-0001.png";
+            logger.logInfo("MAIN-100","Loading Image: " + imagePath);
 
-            ImagemHandler imagem = new ImagemHandler(caminhoDaImagem);
+            ImageHandler image = new ImageHandler(imagePath);
 
-            //? Escolhe a estrutura de dados (Pilha ou Fila)
-            EstruturaDeDados estrutura = new Pilha();
-            logger.logInfo("MAIN-100","Estrutura escolhida: " + estrutura.getClass().getSimpleName());
+            // Choose the data structure (Stack or Queue)
+            DataStructure structure = new Stack();
+            logger.logInfo("MAIN-100","Chosen structure: " + structure.getClass().getSimpleName());
 
-            //? Inicializa o algoritmo
-            FloodFill floodFill = new FloodFill(estrutura);
+            // Initialize the algorithm
+            FloodFill floodFill = new FloodFill(structure);
 
-            //? Define o Pixel inicial e nova cor
+            // Define the starting pixel and new color
             int startX = 50;
             int startY = 15;
             int newRed = 255;
             int newGreen = 0;
             int newBlue = 0;
             logger.logInfo("MAIN-100",
-                    String.format("Aplicando FloodFill em (%d, %d) com cor RGB(%d,%d,%d)",
+                    String.format("Applying FloodFill at (%d, %d) with RGB color(%d,%d,%d)",
                             startX, startY, newRed, newGreen, newBlue)
             );
 
-            floodFill.colorir(imagem, startX, startY, newRed, newGreen, newBlue);
-            logger.logInfo("MAIN-200","Algoritmo FloodFill concluído com sucesso!");
+            floodFill.fill(image, startX, startY, newRed, newGreen, newBlue);
+            logger.logInfo("MAIN-200","FloodFill algorithm completed successfully!");
 
-            //? Cria a pasta de saída se não existir e salva a imagem
-            String pastaDeSaida = "../TDE-1_FloodFill/output";
-            File pastaSaida = new File(pastaDeSaida);
-            if (!pastaSaida.exists()) {
-                pastaSaida.mkdirs();
+            // Create the output folder if it does not exist and save the image
+            String outputFolder = "../TDE-1_FloodFill/output";
+            File outputDir = new File(outputFolder);
+            if (!outputDir.exists()) {
+                outputDir.mkdirs();
             }
 
-            String nomeDoArquivoDeSaida = "Sprite-0001_floodfill.png";
-            String caminhoCompletoSaida = pastaSaida.getAbsolutePath() + "/" + nomeDoArquivoDeSaida;
+            String outputFileName = "Sprite-0001_floodfill.png";
+            String fullOutputPath = outputDir.getAbsolutePath() + "/" + outputFileName;
 
-            ImageIO.write(imagem.getImage(), "png", new File(caminhoCompletoSaida));
-            logger.logInfo("MAIN-200", "Imagem salva em: " + caminhoCompletoSaida);
+            ImageIO.write(image.getImage(), "png", new File(fullOutputPath));
+            logger.logInfo("MAIN-200", "Image saved at: " + fullOutputPath);
 
         } catch (IllegalArgumentException e) {
-            logger.logError("MAIN-404", "Parâmetros inválidos passados ao algoritmo FloodFill.", e);
+            logger.logError("MAIN-404", "Invalid parameters passed to the FloodFill algorithm.", e);
         } catch (IndexOutOfBoundsException e) {
-            logger.logError("MAIN-404", "Coordenadas iniciais fora dos limites da imagem.", e);
+            logger.logError("MAIN-404", "Starting coordinates out of image bounds.", e);
         } catch (IOException e) {
-            logger.logError("MAIN-404", "Erro ao carregar ou salvar a imagem!", e);
+            logger.logError("MAIN-404", "Error loading or saving the image!", e);
         } catch (Exception e) {
-            logger.logError("MAIN-404", "Erro inesperado durante a execução.", e);
+            logger.logError("MAIN-404", "Unexpected error during execution.", e);
         }
     }
 }

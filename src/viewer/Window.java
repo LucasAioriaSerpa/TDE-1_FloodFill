@@ -1,6 +1,6 @@
 package viewer;
 
-import ImageInterpreter.ImagemHandler;
+import ImageInterpreter.ImageHandler;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,7 +13,7 @@ public class Window extends JFrame {
     public Timer timer;
     public int index;
 
-    public Window(String title, int X, int Y, ImagemHandler imagemHandler, int frameSize, int delaySpeed) {
+    public Window(String title, int X, int Y, ImageHandler imagemHandler, int frameSize, int delaySpeed) {
         setup(title, X, Y);
         JPanel panel = new JPanel(new GridLayout(1, 3, 10, 0));
         JLabel ImgOriginal = loadImage(imagemHandler.getFilePath(), 300);

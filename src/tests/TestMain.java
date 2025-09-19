@@ -1,28 +1,28 @@
 package tests;
 
 //* IMPORTS
-import algorithms.EstruturaDeDados;
+import algorithms.DataStructure;
 import algorithms.FloodFill;
-import algorithms.Pilha;
-import algorithms.Fila;
+import algorithms.Stack;
 import utils.LoggingManager;
-import ImageInterpreter.ImagemHandler;
+import ImageInterpreter.ImageHandler;
 import viewer.Window;
 
 //* JAVA IMPORTS
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class TestMain {
-    protected static final LoggingManager logger = new LoggingManager();
-    protected static Scanner choice = new Scanner(System.in);
-    public static void loadingImagePixels() {
+    private static final LoggingManager logger = new LoggingManager();
+    private static final Scanner scanner = new Scanner(System.in);
+
+    // Load and display image information
+    public static void loadImagePixels() {
         try {
-            ImagemHandler img = new ImagemHandler("Sprite-0001.png");
+            ImageHandler img = new ImageHandler("Sprite-0001.png");
             logger.logInfo(
                     "APP_TEST-200",
                     String.format(
-                            "\n\nImage loaded successfully with dimensions: %dx%d and total pixels: %d",
+                            "Image loaded successfully with dimensions: %dx%d and total pixels: %d",
                             img.getImage().getWidth(),
                             img.getImage().getHeight(),
                             img.getImage().getWidth() * img.getImage().getHeight()
@@ -31,71 +31,75 @@ public class TestMain {
         } catch (Exception e) {
             logger.logError(
                     "APP_TEST-404",
-                    "Error loading image: " + e.getMessage(), e
+                    "Failed to load image: " + e.getMessage(), e
             );
         }
     }
-    public static void viewImage() {
+
+    // Open a window and show the image
+    public static void displayImage() {
         try {
             new Window(
-                    "test",
+                    "Image Viewer",
                     800,
                     600,
-                    new ImagemHandler(
-                            "Sprite-0001.png"
-                    ),
+                    new ImageHandler("Sprite-0001.png"),
                     1502,
                     50
             );
             logger.logInfo(
-                    "APP-TEST-200",
-                    "Visualização da janela foi feita com sucesso!"
+                    "APP_TEST-200",
+                    "Window visualization executed successfully!"
             );
         } catch (Exception e) {
             logger.logError(
-                    "APP-TEST-404",
-                    "Falha em mostrar a tela: " + e.getMessage(), e
+                    "APP_TEST-404",
+                    "Failed to display window: " + e.getMessage(), e
             );
         }
     }
-    public static void createFrames() {
+
+    // Apply FloodFill algorithm and save frames
+    public static void generateFrames() {
         try {
-            ImagemHandler img = new ImagemHandler("Sprite-0001.png");
-            EstruturaDeDados estrutura = new Pilha();
-            FloodFill floodFill = new FloodFill(estrutura);
-            HashMap<String, Integer> point = new HashMap<>();
-            point.put("X", 50);
-            point.put("Y", 15);
-            point.put("RED", 0);
-            point.put("GREEN", 0);
-            point.put("BLUE", 255);
-            floodFill.colorir(img, point.get("X"), point.get("Y"), point.get("RED"), point.get("GREEN"), point.get("BLUE"));
+            ImageHandler img = new ImageHandler("Sprite-0001.png");
+            DataStructure structure = new Stack();
+            FloodFill floodFill = new FloodFill(structure);
+
+            // Example: fill starting from point (50, 15) with blue
+            int x = 50, y = 15;
+            int red = 0, green = 0, blue = 255;
+
+            floodFill.fill(img, x, y, red, green, blue);
+
             logger.logInfo(
-                    "APP-TEST-200",
-                    "Criação dos frames feita com sucesso!"
+                    "APP_TEST-200",
+                    "Frames created successfully!"
             );
         } catch (Exception e) {
             logger.logError(
-                    "APP-TEST-404",
-                    "Falha em criar os frames: " + e.getMessage(),e
+                    "APP_TEST-404",
+                    "Failed to create frames: " + e.getMessage(), e
             );
         }
     }
+
     public static void main(String[] args) {
-        logger.logInfo(
-                "APP_TEST-000",
-                "Application TEST running..."
-        );
-        logger.logInfo(
-                "APP_TEST-001",
-                "choose a test to run:"
-        );
+        logger.logInfo("APP_TEST-000", "Application TEST running...");
+        logger.logInfo("APP_TEST-001", "Choose a test to run:");
+        System.out.println("1 - Load image pixels");
+        System.out.println("2 - Display image in window");
+        System.out.println("3 - Generate frames with FloodFill");
         System.out.print("→ ");
-        switch (choice.nextLine()) {
-            case "1" -> loadingImagePixels();
-            case "2" -> viewImage();
-            case "3" -> createFrames();
+
+        String option = scanner.nextLine();
+        switch (option) {
+            case "1" -> loadImagePixels();
+            case "2" -> displayImage();
+            case "3" -> generateFrames();
             default -> System.out.println("Invalid test choice.");
         }
+
+        scanner.close();
     }
 }
